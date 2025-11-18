@@ -1,12 +1,20 @@
-import { Router, Request, Response } from "express";
-import { authController } from "./auth.controller";
-import { validationMiddleware } from "../middlewares/validation.middleware";
-import RegisterDto from "./dto/register.dto";
-import LoginDto from "./dto/login.dto";
+import { Router } from "express";
+import { authController } from "./auth.controller.js";
+import { validateZodSchema } from "../middlewares/validateZodSchema.middleware.js";
+import { loginSchema, registerSchema } from "./schemas.js";
 
 const authRouter = Router();
 
-authRouter.post("/register", validationMiddleware(RegisterDto), authController.register);
-authRouter.post("/login", validationMiddleware(LoginDto), authController.login);
+authRouter.post(
+  "/register",
+  validateZodSchema(registerSchema),
+  authController.register
+);
+
+authRouter.post(
+    "/login",
+    validateZodSchema(loginSchema),
+    authController.login
+);
 
 export default authRouter;

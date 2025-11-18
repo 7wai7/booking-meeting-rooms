@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
-import { connectDB } from "./database/db";
+import authRouter from "./auth/auth.router.js";
 dotenv.config();
 
 const app = express();
@@ -10,6 +10,7 @@ const port = process.env.PORT ?? 3000;
 
 app.use(express.json());
 
+app.use("/api/auth", authRouter)
 
 app.use((err, req, res, next) => {
     if(process.env.NODE_ENV === 'development') console.error(err);
@@ -18,8 +19,6 @@ app.use((err, req, res, next) => {
 
 async function start() {
     try {
-        await connectDB();
-
         app.listen(port, () => {
             console.log(`Server listening on port ${port}`);
         });

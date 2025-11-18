@@ -1,4 +1,4 @@
-import { authService } from "./auth.service";
+import { authService } from "./auth.service.js";
 
 class AuthController {
     tokenAge = 1000 * 60 * 60 * 24;

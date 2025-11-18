@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { userService } from '../user/user.service';
+import jwt from "jsonwebtoken";
+import { userService } from '../user/user.service.js';
 dotenv.config();
 
 // isHardGuard === false -- залишити доступ неаторизованим користувачам но з меншим функціоналом
