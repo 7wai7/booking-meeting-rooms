@@ -1,7 +1,7 @@
 .auth-card {
   margin: auto;
-  width: 80%;
-  max-width: 1200px;
+  width: 60%;
+  max-width: 900px;
   padding: 2rem;
   display: flex;
   flex-direction: row;
@@ -13,7 +13,7 @@
 
 .auth-card p {
   color: var(--muted);
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .auth-card .left {
@@ -52,15 +52,20 @@
   background-color: var(--blue);
   padding: 0.5rem 0.2rem;
   border-radius: 1rem;
-  margin: 1.4rem 0 1rem;
+  margin-top: 1.4rem;
+}
+
+.auth-card .submit-btn[disabled] {
+  background-color: gray;
 }
 
 .auth-card .bottom {
-    align-self: flex-end;
+  margin-top: 1.4rem;
+  align-self: flex-end;
 }
 
 .auth-card .login-btn {
   background: none;
   color: var(--blue);
-  font-size: .9rem;
+  font-size: 0.9rem;
 }

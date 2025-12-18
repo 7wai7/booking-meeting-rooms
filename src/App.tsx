@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import "./styles/App.css";
 import Layout from "./pages/Layout";
-import AuthForm from "./components/AuthForm";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
     <>
       <Routes
       >
-        <Route path="/auth" element={<AuthForm />} />
+        <Route path="/auth" element={<AuthPage />} />
 
         <Route path="/" element={<Layout />}>
           {/* <Route index element={} /> */}
