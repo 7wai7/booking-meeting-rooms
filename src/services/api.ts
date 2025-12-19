@@ -1,14 +1,15 @@
 import type { AuthData } from "../types/AuthData";
-import type { UserStorage } from "../types/User";
+import type { User, UserStorage } from "../types/User";
 import { delay } from "../utils/delay";
 import { FieldError } from "../utils/FieldError";
 import { read, write } from "../utils/storage";
 
 const LS = {
   USERS: "demo_users",
+  SESSION: "demo_session", // імітація httpOnly cookie
 };
 
-export const register = async (authData: AuthData) => {
+export const registerApi = async (authData: AuthData) => {
   await delay();
   const users: UserStorage[] = read(LS.USERS, []);
 
@@ -22,6 +23,8 @@ export const register = async (authData: AuthData) => {
   };
 
   write(LS.USERS, [...users, user]);
+  write(LS.SESSION, { userId: user.id });
+  
   return {
     id: user.id,
     email: user.email,
@@ -29,18 +32,36 @@ export const register = async (authData: AuthData) => {
   };
 };
 
-export const login = async (authData: AuthData) => {
+export const loginApi = async (authData: AuthData): Promise<User> => {
   await delay();
+
   const users: UserStorage[] = read(LS.USERS, []);
-
   const user = users.find((u) => u.email === authData.email.toLowerCase());
-  if (!user) throw new FieldError([{ field: "email", message: "The user does not exists" }]);
 
-  if (user.password !== authData.password) throw new FieldError([{ field: "password", message: "Invalid password" }]);
+  if (!user)
+    throw new FieldError([{ field: "email", message: "User not found" }]);
 
-  return {
-    id: user.id,
-    email: user.email,
-    name: user.name,
-  };
+  if (user.password !== authData.password)
+    throw new FieldError([{ field: "password", message: "Invalid password" }]);
+
+  write(LS.SESSION, { userId: user.id });
+
+  return { id: user.id, email: user.email, name: user.name };
 };
+
+export const meApi = async (): Promise<User | null> => {
+  await delay();
+
+  const session = read<{ userId: string } | null>(LS.SESSION, null);
+  if (!session) return null;
+
+  const users: UserStorage[] = read(LS.USERS, []);
+  const user = users.find((u) => u.id === session.userId);
+  if (!user) return null;
+
+  return { id: user.id, email: user.email, name: user.name };
+};
+
+export async function logoutApi() {
+  write(LS.SESSION, null);
+}

@@ -31,8 +31,10 @@ body {
 
 button {
   border: 1px solid transparent;
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: border-color 0.25s;
+  background: none;
 }
 button:hover {
   border-color: var(--blue);
@@ -53,4 +55,14 @@ input {
   border-radius: 0.5rem;
   color: black;
   outline: none;
+}
+
+a {
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s ease-in-out;
+}
+
+a:hover {
+  border-color: var(--blue);
 }

@@ -11,7 +11,7 @@
   box-shadow: var(--shadow);
 }
 
-p {
+.auth_card p {
   color: var(--muted);
   font-size: 0.9rem;
 }

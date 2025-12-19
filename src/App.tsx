@@ -2,17 +2,24 @@ import { Route, Routes } from "react-router-dom";
 import "./styles/App.css";
 import Layout from "./pages/Layout";
 import AuthPage from "./pages/AuthPage";
+import MeetingRoomsPage from "./pages/MeetingRoomsPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
     <>
-      <Routes
-      >
+      <Routes>
         <Route path="/auth" element={<AuthPage />} />
 
-        <Route path="/" element={<Layout />}>
-          {/* <Route index element={} /> */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Layout />}>
+            {/* <Route index element={<Main />} /> */}
+            <Route path="/rooms" element={<MeetingRoomsPage />} />
+          </Route>
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

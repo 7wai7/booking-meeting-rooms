@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./styles/index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
-import { UserProvider } from "./components/UserProvider.tsx";
+import { AuthProvider } from "./components/AuthProvider.tsx";
 
 if (import.meta.env.DEV) {
   const script = document.createElement("script");
@@ -15,9 +15,9 @@ if (import.meta.env.DEV) {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <UserProvider>
+      <AuthProvider>
         <App />
-      </UserProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 );

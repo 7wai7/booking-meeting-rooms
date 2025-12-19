@@ -5,8 +5,10 @@
   display: flex;
 }
 
-.page {
-  height: 100%;
+main {
+  margin-left: 15rem;
+  width: 100%;
+  padding: 1.5rem 2rem;
 }
 
 img {

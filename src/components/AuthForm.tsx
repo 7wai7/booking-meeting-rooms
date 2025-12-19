@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useFieldErrors from "../hooks/useFieldErrors";
-import { useUser } from "../hooks/useUser";
-import { login, register } from "../services/api";
 import css from "../styles/AuthPage.module.css";
 import type { AuthData } from "../types/AuthData";
 import { FieldError } from "../utils/FieldError";
+import { useAuth } from "../hooks/useAuth";
 
 interface Props {
   isSignup: boolean;
@@ -13,16 +12,13 @@ interface Props {
 
 export default function AuthForm({ isSignup }: Props) {
   const [authData, setAuthData] = useState<Partial<AuthData>>({});
-  const { setUser } = useUser();
+  const { register, login } = useAuth();
   const navigate = useNavigate();
   const { errors: authErrors, showErrors } = useFieldErrors();
 
   const onSubmit = () => {
     (isSignup ? register : login)(authData as AuthData)
-      .then((user) => {
-        setUser(user);
-        navigate("/");
-      })
+      .then(() => navigate("/"))
       .catch((err) => {
         if (err instanceof FieldError) showErrors(err.fields);
       });
