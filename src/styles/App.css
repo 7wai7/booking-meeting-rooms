@@ -24,6 +24,7 @@ main {
   flex: 1;
   background-color: unset;
   width: 100%;
+  min-height: 2rem;
 }
 
 .loading-card {
@@ -51,4 +52,9 @@ main {
   to {
     transform: rotate(360deg);
   }
+}
+
+.error_message {
+  color: var(--red) !important;
+  font-size: 0.9rem;
 }

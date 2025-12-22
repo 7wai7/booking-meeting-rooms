@@ -42,26 +42,32 @@ button {
 }
 button,
 input,
-textarea {
+textarea,
+select {
   transition: border-color 0.25s;
 }
 input:hover,
 button:hover,
-textarea:hover {
+textarea:hover,
+select:hover {
   border-color: var(--blue);
 }
+
 button:focus,
 button:focus-visible {
   outline: 1px auto;
 }
 
 input:focus,
-input:focus-visible {
+input:focus-visible,
+select:focus,
+select:focus-visible {
   border: 1px solid var(--blue);
 }
 
 input,
-textarea {
+textarea,
+select {
   background: none;
   border: 1px solid lightgray;
   border-radius: 0.5rem;
