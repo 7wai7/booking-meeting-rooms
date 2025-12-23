@@ -1,8 +1,12 @@
-import type { Booking, BookingInput, BookingWithRoom } from "../types/Booking";
+import type { Booking, BookingInput, BookingFull } from "../types/Booking";
 import type { MeetingRoom } from "../types/MeetingRoom";
 import { LS, read, write } from "../utils/storage";
+import type { Session, User } from "../types/User";
 
 export const createBookingRaw = (input: BookingInput) => {
+  const session = read<Session | null>(LS.SESSION, null);
+  if (!session) return null;
+
   const rooms: MeetingRoom[] = read(LS.ROOMS, []);
   const bookings: Booking[] = read(LS.BOOKINGS, []);
 
@@ -27,6 +31,7 @@ export const createBookingRaw = (input: BookingInput) => {
 
   const newBooking: Booking = {
     id: crypto.randomUUID(),
+    ownerId: session.userId,
     ...input,
   };
 
@@ -35,22 +40,28 @@ export const createBookingRaw = (input: BookingInput) => {
   return {
     ...newBooking,
     room,
+    isOwn: true
   };
 };
 
-
 export const getAllBookingsRaw = () => {
+  const session = read<Session | null>(LS.SESSION, null);
+
+  const users: User[] = read(LS.USERS, []);
   const rooms: MeetingRoom[] = read(LS.ROOMS, []);
   const bookings: Booking[] = read(LS.BOOKINGS, []);
 
-  const result: BookingWithRoom[] = [];
+  const result: BookingFull[] = [];
   for (const booking of bookings) {
     const room = rooms.find((r) => r.id == booking.roomId);
-    if (room)
-      result.push({
-        ...booking,
-        room,
-      });
+    const user = users.find((u) => u.id == booking.ownerId);
+
+    result.push({
+      ...booking,
+      user,
+      room,
+      isOwn: session?.userId === user?.id,
+    });
   }
 
   return result;

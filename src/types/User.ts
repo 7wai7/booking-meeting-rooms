@@ -7,3 +7,5 @@ export type User = {
 export type UserStorage = {
   password: string;
 } & User;
+
+export type Session = { userId: string };

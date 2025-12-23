@@ -47,10 +47,6 @@
   background-color: var(--blue);
 }
 
-.submit_btn[disabled] {
-  background-color: gray;
-}
-
 .pending_panel {
   border-radius: var(--radius);
   position: absolute;

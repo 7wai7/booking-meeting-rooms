@@ -55,10 +55,6 @@
   margin-top: 1.4rem;
 }
 
-.submit_btn[disabled] {
-  background-color: gray;
-}
-
 .bottom {
   margin-top: 1.4rem;
   align-self: flex-end;

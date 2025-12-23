@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { memo } from "react";
-import { getAllBookingsApi } from "../services/api";
-import type { BookingWithRoom } from "../types/Booking";
+import { deleteBookingApi, getAllBookingsApi } from "../services/api";
+import type { Booking, BookingFull } from "../types/Booking";
 import LoadingSpinner from "./LoadingSpinner";
 import css from "../styles/BookingsList.module.css";
 
@@ -41,11 +41,22 @@ export const BookingsList = memo(function () {
 });
 
 interface BookingItemProps {
-  data: BookingWithRoom;
+  data: BookingFull;
   onClick?: () => void;
 }
 
 function BookingItem({ data, onClick }: BookingItemProps) {
+  const queryClient = useQueryClient();
+
+  const { mutate: cancelBooking, isPending } = useMutation({
+    mutationFn: deleteBookingApi,
+    onSuccess: () => {
+      queryClient.setQueryData<Booking[]>(["bookings-list"], (prev) =>
+        prev?.filter((booking) => booking.id !== data.id)
+      );
+    },
+  });
+
   const formattedDate = new Intl.DateTimeFormat("uk-UA", {
     day: "2-digit",
     month: "2-digit",
@@ -64,12 +75,23 @@ function BookingItem({ data, onClick }: BookingItemProps) {
 
   return (
     <div className={clsx(css.bookings_item, css.grid)} onClick={onClick}>
-      <h3 className={css.room_title}>{data.room.title}</h3>
+      <h3 className={css.room_title}>
+        {data.room?.title ?? <strong>Not found</strong>}
+      </h3>
       <p className={css.date}>{formattedDate}</p>
       <p className={css.time}>
         {formattedStartTime} - {formattedEndTime}
       </p>
       <p className={css.description}>{data.description}</p>
+      {data.isOwn && (
+        <button
+          className={css.cancel_booking_btn}
+          onClick={() => cancelBooking(data.id)}
+          disabled={isPending}
+        >
+          Cancel
+        </button>
+      )}
     </div>
   );
 }

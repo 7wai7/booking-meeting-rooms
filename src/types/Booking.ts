@@ -1,4 +1,5 @@
 import type { MeetingRoom } from "./MeetingRoom";
+import type { User } from "./User";
 
 export type BookingInput = {
   roomId: string;
@@ -10,10 +11,13 @@ export type BookingInput = {
 
 export type Booking = {
   id: string;
+  ownerId: string;
 } & BookingInput;
 
-export type BookingWithRoom = {
-  room: MeetingRoom;
+export type BookingFull = {
+  room?: MeetingRoom;
+  user?: User;
+  isOwn?: boolean;
 } & Booking;
 
 export type UpdateBookingInput = Partial<BookingInput>;
